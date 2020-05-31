@@ -65,35 +65,56 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
+            
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                <form class="form-horizontal" method="post">
+              <div class="form-group">
+                <label class="control-label col-sm-3">Provinsi:</label>
+                <div class="col-sm-9">
+                    {{-- $sql_provinsi = mysqli_query($con,"SELECT * FROM provinces ORDER BY name ASC"); --}}
+                  <select class="form-control" name="provinsi" id="provinsi">
+                    <option></option>
+                    {{--
+                        while($rs_provinsi = mysqli_fetch_assoc($sql_provinsi)){ 
+                           echo '<option value="'.$rs_provinsi['id'].'">'.$rs_provinsi['name'].'</option>';
+                        }
+                      --}}                    
+                  </select>
+                  <img src="asset/img/loading.gif" width="35" id="load1" style="display:none;" />
                 </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" >Kota/Kabupaten:</label>
+                <div class="col-sm-9">          
+                  <select class="form-control" name="kota" id="kota">
+                    <option></option>
+                  </select>
+                  <img src="asset/img/loading.gif" width="35" id="load2" style="display:none;" />
                 </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" >Kecamatan:</label>
+                <div class="col-sm-9">          
+                  <select class="form-control" name="kecamatan" id="kecamatan">
+                    <option></option>
+                  </select>
+                  <img src="asset/img/loading.gif" width="35" id="load3" style="display:none;" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" >Kelurahan:</label>
+                <div class="col-sm-9">          
+                  <select class="form-control" name="kelurahan" id="kelurahan">
+                    <option></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">        
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-default">Simpan</button>
+                </div>
+              </div>
+            </form>
             </div>
         </div>
     </body>

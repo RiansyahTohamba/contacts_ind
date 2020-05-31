@@ -1,0 +1,294 @@
+buat database baru di localhost/phpmyadmin dan berinama latihanlaravel
+Setting file .env kalian pada folder root, ganti pada bagian ini
+
+nb: bagian DB_DATABASE sesuaikan dengan nama database kalian.
+
+Buat Model bernama ModelKontak dengan cara seperti ini
+
+php artisan make:model ModelKontak --migration
+
+nb: migration adalah command otomatis laravel sehingga tercipta fungsi membuat migration yang akan mempermudah kita membuat database.
+Edit file Model kita buka folder app -> ModelKontak.php dan edit isinya seperti ini
+class ModelKontak extends Model
+{
+    protected $table = 'kontak';
+}
+nb: protected $table adalah variable untuk menentukan bahwa table yang digunakan pada model itu adalah kontak.
+
+Periksa folder database -> migrations dan disitu akan terlihat migration yang kita buat. Kita akan melihat dua migration default yaitu create_user_table dan create_password_resets_table. 
+Hapus kedua file tersebut karena kita tidak akan menggunakannya.
+
+Kalian akan melihat file create_model_kontaks_table . Klik filenya, maka kalian akan melihat dua method yaitu up dan down. up adalah method dalam membuat table, sedangkan down adalah method dalam mendrop table.
+
+Sekarang ubah isi function method up kalian seperti dibawah ini
+public function up()
+    {
+        Schema::create('kontak', function (Blueprint $table) {
+            $table->increments('id'); //membuat kolom id auto increment
+            $table->string('nama'); //membuat kolom nama
+            $table->string('email'); //membuat kolom email
+            $table->string('nohp'); //membuat kolom no hp
+            $table->text('alamat'); //membuat kolom alamat dengan tipe text
+            $table->timestamps(); //membuat kolom created_at dan updated_at sebagai fungsi dasar laravel
+        });
+    }
+Kalau sudah selesai tandanya kita siap melakukan migration, jalankan perintahnya dengan command
+php artisan migrate
+jika ada muncul tulisan pada command prompt seperti dibawah ini maka kalian sudah berhasil
+Migration table created successfully.
+Migrating: 2017_09_04_024632_create_model_kontaks_table
+Migrated:  2017_09_04_024632_create_model_kontaks_table
+Saatnya sekarang membuat seeder yaitu data yang akan diisi ke table kontak. Mari kita buat seeder dengan cara
+php artisan make:seeder KontakSeeder
+buka file KontakSeeder pada database -> seeds -> KontakSeeder.php lalu masukkan kode dibawah
+public function run()
+    {
+        //
+        $faker = Faker\Factory::create(); //import library faker
+
+        $limit = 5; //batasan berapa banyak data
+
+        for ($i = 0; $i < $limit; $i++) {
+            DB::table('kontak')->insert([ //mengisi datadi database
+                'nama' => $faker->name,
+                'email' => $faker->unique()->email, //email unique sehingga tidak ada yang sama
+                'nohp' => $faker->phoneNumber,
+                'alamat' => $faker->address,
+            ]);
+        }
+    }
+nb: Faker adalah library laravel dalam membuat data palsu, nantinya setelah database kalian di seed akan muncul data-data random yang otomatis muncul.
+Sekarang klik DatabaseSeeder.php didalam folder yang sama dan ganti isi method run menjadi seperti ini
+public function run()
+    {
+        $this->call(KontakSeeder::class); //memanggil class KontakSeeder
+    }
+Sekarang jalankan seeder dengan cara
+php artisan db:seed
+Jika muncul tulisan seperti ini maka kamu berhasil
+Seeding: KontakSeeder
+
+Process finished with exit code 0 at 10:10:19.
+Execution time: 1,107 ms.
+Buat controller baru bernama Kontak, cara membuatnya adalah
+php artisan make:controller Kontak --resource
+nb: resource adalah command otomatis laravel sehingga tercipta fungsi-fungsi dasar Controller seperti Index, Create, Store, Update, Show, dan Destroy.
+Bagi yang belum pernah mengikuti TUTORIAL LARAVEL 5.4 — TEMPLATING maka silahkan ikuti tutorial itu terlebih dahulu untuk mendapat file template base-nya.
+Jika sudah siap maka lanjut!
+Buka controller pada app -> Http -> Controllers -> Kontak.php lalu edit pada bagian index hingga seperti ini
+public function index()
+    {
+        $data = ModelKontak::all();
+        return view('kontak',compact('data'));
+    }
+OHIYA, jangan lupa import file si model itu, kalo elo pake Phpstorm tinggal alt+enter nanti tinggal klik import class. Kalo elo pake yang lain berarti import code dibawah pada bagian atas.
+use App\ModelKontak;
+Thanks for Inal Zainal Mustaqin yang udah reminder, ane juga baru engeh lupa ngasitau untuk import ^^ maaf ya
+Kalo udah mari kita buat file di folder views, beri nama kontak.blade.php dan masukkan kode dibawah
+@extends('base')
+@section('content')
+    <!-- Main Section -->
+    <section class="main-section">
+        <!-- Add Your Content Inside -->
+        <div class="content">
+            <!-- Remove This Before You Start -->
+            <h1>Anak IT -  Table Kontak</h1>
+            @if(Session::has('alert-success'))
+                <div class="alert alert-success">
+                    <strong>{{ \Illuminate\Support\Facades\Session::get('alert-success') }}</strong>
+                </div>
+            @endif
+            <hr>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>No. HP</th>
+                    <th>Alamat</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+                <tbody>
+                @php $no = 1; @endphp
+                @foreach($data as $datas)
+                    <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $datas->nama }}</td>
+                        <td>{{ $datas->email }}</td>
+                        <td>{{ $datas->nohp }}</td>
+                        <td>{{ $datas->alamat }}</td>
+                        <td>
+                            <form action="{{ route('kontak.destroy', $datas->id) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <a href="{{ route('kontak.edit',$datas->id) }}" class=" btn btn-sm btn-primary">Edit</a>
+                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Yakin ingin menghapus data?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        <!-- /.content -->
+    </section>
+    <!-- /.main-section -->
+@endsection
+Sekarang kita edit file routes di routes -> web.php lalu tambahkan baris ini
+Route::resource('kontak','Kontak'); //tambahkan baris ini
+Route::get('/', function () {
+    return view('index');
+});
+Route::get('/halaman-kedua', function () {
+    return view('halamandua');
+});
+fungsi dari resource sendiri adalah metode penggunaan route sdari laravel yang menggunakan default method dari bawaan laravel seperti index, create, update, store, show, dan destroy.
+Sehingga jika kita akses url cukup menggunakan url bawaan seperti URL/nama_controller/method. Contoh :
+localhost:8000/kontak/ untuk index page
+localhost:8000/kontak/create untuk membuat halaman
+localhost:8000/kontak/store untuk method insert
+localhost:8000/kontak/{id} untuk view suatu halaman berdasarkan id
+localhost:8000/kontak/{id}/edit untuk mengedit
+localhost:8000/kontak/{id}/destroy untuk menghapus
+Setelah kita menset routes kita, sekarang kita dapat mengakses web kita untuk melihat data yaitu R (Read). Jalankan dengan cara php artisan serve
+Akses ke localhost:8000 dan lihat apakah hasilnya sudah seperti ini
+
+Sekarang saatnya kita membuat function untuk store (insert data) ke database. Buat sebuah view baru berinama kontak_create.blade.php dan masukkan kode dibawah.
+@extends('base')
+@section('content')
+    <!-- Main Section -->
+    <section class="main-section">
+        <!-- Add Your Content Inside -->
+        <div class="content">
+            <!-- Remove This Before You Start -->
+            <h1>Anak IT -  Tambah Kontak</h1>
+            <hr>
+            <form action="{{ route('kontak.store') }}" method="post">
+                {{ csrf_field() }}
+                <div class="form-group">
+                    <label for="nama">Nama:</label>
+                    <input type="text" class="form-control" id="usr" name="nama">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="nohp">No Hp:</label>
+                    <input type="text" class="form-control" id="nohp" name="nohp">
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat:</label>
+                    <textarea class="form-control" id="alamat" name="alamat"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-md btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-md btn-danger">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.content -->
+    </section>
+    <!-- /.main-section -->
+@endsection
+Setelah itu edit controller Kontak.php dan edit pada method create dan store.
+public function create()
+   {
+       return view('kontak_create');
+   }
+
+   /**
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+   public function store(Request $request)
+   {
+       $data = new ModelKontak();
+       $data->nama = $request->nama;
+       $data->email = $request->email;
+       $data->nohp = $request->nohp;
+       $data->alamat = $request->alamat;
+       $data->save();
+       return redirect()->route('kontak.index')->with('alert-success','Berhasil Menambahkan Data!');
+   }
+Silahkan kalian coba akses ke localhost:8000/create , jika berhasil maka akan ada tanda “Berhasil menambahkan data saat berhasil”.
+Sekarang kita akan membuat function edit yaitu mengubah data. Silahkan buat views baru dan berinama kontak_edit.blade.php lalu masukkan kode dibawah
+@extends('base')
+@section('content')
+    <!-- Main Section -->
+    <section class="main-section">
+        <!-- Add Your Content Inside -->
+        <div class="content">
+            <!-- Remove This Before You Start -->
+            <h1>Anak IT -  Edit Kontak</h1>
+            <hr>
+            @foreach($data as $datas)
+            <form action="{{ route('kontak.update', $datas->id) }}" method="post">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+                <div class="form-group">
+                    <label for="nama">Nama:</label>
+                    <input type="text" class="form-control" id="usr" name="nama" value="{{ $datas->nama }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ $datas->email }}">
+                </div>
+                <div class="form-group">
+                    <label for="nohp">No Hp:</label>
+                    <input type="text" class="form-control" id="nohp" name="nohp" value="{{ $datas->nohp }}">
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat:</label>
+                    <textarea class="form-control" id="alamat" name="alamat">{{ $datas->alamat }}</textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-md btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-md btn-danger">Cancel</button>
+                </div>
+            </form>
+            @endforeach
+        </div>
+        <!-- /.content -->
+    </section>
+    <!-- /.main-section -->
+@endsection
+Setelah membuat view baru, sekarang saatnya menambahkan function pada method edit dan update.
+public function edit($id)
+    {
+        $data = ModelKontak::where('id',$id)->get();
+
+        return view('kontak_edit',compact('data'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $data = ModelKontak::where('id',$id)->first();
+        $data->nama = $request->nama;
+        $data->email = $request->email;
+        $data->nohp = $request->nohp;
+        $data->alamat = $request->alamat;
+        $data->save();
+        return redirect()->route('kontak.index')->with('alert-success','Data berhasil diubah!');
+    }
+Nanggung nih, sekalian deh edit pada method destroy dan masukkan kode dibawah.
+public function destroy($id)
+    {
+        $data = ModelKontak::where('id',$id)->first();
+        $data->delete();
+        return redirect()->route('kontak.index')->with('alert-success','Data berhasi dihapus!');
+    }
+Saatnya mencoba, silahkan klik tombol edit jika berhasil maka akan sepert gambar dibawah ini.
+
+Dan jika kamu ingin menghapus cukup klik delete
