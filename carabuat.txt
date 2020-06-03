@@ -70,6 +70,9 @@ Seeding: KontakSeeder
 
 Process finished with exit code 0 at 10:10:19.
 Execution time: 1,107 ms.
+------------------------------------
+Controller
+---------------------------
 Buat controller baru bernama Kontak, cara membuatnya adalah
 php artisan make:controller Kontak --resource
 nb: resource adalah command otomatis laravel sehingga tercipta fungsi-fungsi dasar Controller seperti Index, Create, Store, Update, Show, dan Destroy.
@@ -137,6 +140,7 @@ Kalo udah mari kita buat file di folder views, beri nama kontak.blade.php dan ma
     <!-- /.main-section -->
 @endsection
 Sekarang kita edit file routes di routes -> web.php lalu tambahkan baris ini
+
 Route::resource('kontak','Kontak'); //tambahkan baris ini
 Route::get('/', function () {
     return view('index');
@@ -144,6 +148,7 @@ Route::get('/', function () {
 Route::get('/halaman-kedua', function () {
     return view('halamandua');
 });
+
 fungsi dari resource sendiri adalah metode penggunaan route sdari laravel yang menggunakan default method dari bawaan laravel seperti index, create, update, store, show, dan destroy.
 Sehingga jika kita akses url cukup menggunakan url bawaan seperti URL/nama_controller/method. Contoh :
 localhost:8000/kontak/ untuk index page

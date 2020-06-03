@@ -72,6 +72,7 @@
                 <label class="control-label col-sm-3">Provinsi:</label>
                 <div class="col-sm-9">
                     {{-- $sql_provinsi = mysqli_query($con,"SELECT * FROM provinces ORDER BY name ASC"); --}}
+                    {{ $tes }}
                   <select class="form-control" name="provinsi" id="provinsi">
                     <option></option>
                     {{--
