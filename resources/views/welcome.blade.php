@@ -72,14 +72,10 @@
                 <label class="control-label col-sm-3">Provinsi:</label>
                 <div class="col-sm-9">
                     {{-- $sql_provinsi = mysqli_query($con,"SELECT * FROM provinces ORDER BY name ASC"); --}}
-                    {{ $tes }}
                   <select class="form-control" name="provinsi" id="provinsi">
-                    <option></option>
-                    {{--
-                        while($rs_provinsi = mysqli_fetch_assoc($sql_provinsi)){ 
-                           echo '<option value="'.$rs_provinsi['id'].'">'.$rs_provinsi['name'].'</option>';
-                        }
-                      --}}                    
+                    @foreach($prov as $provinces)
+                      <option value="{{$prov->id }}">{{ $prov->name }}</option>
+                    @endforeach
                   </select>
                   <img src="asset/img/loading.gif" width="35" id="load1" style="display:none;" />
                 </div>
