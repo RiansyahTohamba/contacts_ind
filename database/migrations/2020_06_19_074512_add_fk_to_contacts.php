@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegenciesTable extends Migration
+class AddFkToContacts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateRegenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('regencies', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
+        Schema::table('contacts', function (Blueprint $table) {
             $table->foreignId('province_id')->constrained();
+            $table->foreignId('regency_id')->constrained();
+            $table->foreignId('district_id')->constrained();
+            $table->foreignId('village_id')->constrained();
         });
-
     }
 
     /**
@@ -29,6 +28,8 @@ class CreateRegenciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regencies');
+        Schema::table('contacts', function (Blueprint $table) {
+            //
+        });
     }
 }

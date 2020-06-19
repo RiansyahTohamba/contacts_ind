@@ -1,44 +1,5 @@
-buat database baru di localhost/phpmyadmin dan berinama latihanlaravel
-Setting file .env kalian pada folder root, ganti pada bagian ini
-
-nb: bagian DB_DATABASE sesuaikan dengan nama database kalian.
-
-Buat Model bernama ModelKontak dengan cara seperti ini
-
-php artisan make:model ModelKontak --migration
-
-nb: migration adalah command otomatis laravel sehingga tercipta fungsi membuat migration yang akan mempermudah kita membuat database.
-Edit file Model kita buka folder app -> ModelKontak.php dan edit isinya seperti ini
-class ModelKontak extends Model
-{
-    protected $table = 'kontak';
-}
-nb: protected $table adalah variable untuk menentukan bahwa table yang digunakan pada model itu adalah kontak.
-
-Periksa folder database -> migrations dan disitu akan terlihat migration yang kita buat. Kita akan melihat dua migration default yaitu create_user_table dan create_password_resets_table. 
-Hapus kedua file tersebut karena kita tidak akan menggunakannya.
-
-Kalian akan melihat file create_model_kontaks_table . Klik filenya, maka kalian akan melihat dua method yaitu up dan down. up adalah method dalam membuat table, sedangkan down adalah method dalam mendrop table.
-
-Sekarang ubah isi function method up kalian seperti dibawah ini
-public function up()
-    {
-        Schema::create('kontak', function (Blueprint $table) {
-            $table->increments('id'); //membuat kolom id auto increment
-            $table->string('nama'); //membuat kolom nama
-            $table->string('email'); //membuat kolom email
-            $table->string('nohp'); //membuat kolom no hp
-            $table->text('alamat'); //membuat kolom alamat dengan tipe text
-            $table->timestamps(); //membuat kolom created_at dan updated_at sebagai fungsi dasar laravel
-        });
-    }
-Kalau sudah selesai tandanya kita siap melakukan migration, jalankan perintahnya dengan command
-php artisan migrate
-jika ada muncul tulisan pada command prompt seperti dibawah ini maka kalian sudah berhasil
-Migration table created successfully.
-Migrating: 2017_09_04_024632_create_model_kontaks_table
-Migrated:  2017_09_04_024632_create_model_kontaks_table
-Saatnya sekarang membuat seeder yaitu data yang akan diisi ke table kontak. Mari kita buat seeder dengan cara
+Saatnya sekarang membuat seeder yaitu data yang akan diisi ke table kontak. 
+Mari kita buat seeder dengan cara
 php artisan make:seeder KontakSeeder
 buka file KontakSeeder pada database -> seeds -> KontakSeeder.php lalu masukkan kode dibawah
 public function run()
@@ -64,7 +25,9 @@ public function run()
         $this->call(KontakSeeder::class); //memanggil class KontakSeeder
     }
 Sekarang jalankan seeder dengan cara
+
 php artisan db:seed
+
 Jika muncul tulisan seperti ini maka kamu berhasil
 Seeding: KontakSeeder
 

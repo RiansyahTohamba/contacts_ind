@@ -71,9 +71,8 @@
               <div class="form-group">
                 <label class="control-label col-sm-3">Provinsi:</label>
                 <div class="col-sm-9">
-                    {{-- $sql_provinsi = mysqli_query($con,"SELECT * FROM provinces ORDER BY name ASC"); --}}
                   <select class="form-control" name="provinsi" id="provinsi">
-                    @foreach($prov as $provinces)
+                    @foreach($provinces as $prov)
                       <option value="{{$prov->id }}">{{ $prov->name }}</option>
                     @endforeach
                   </select>

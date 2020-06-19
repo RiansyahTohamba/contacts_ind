@@ -18,10 +18,6 @@ class CreateContactsTable extends Migration
             $table->string('name'); 
             $table->string('email'); 
             $table->string('handphone'); 
-            // $table->foreign('province_id')->references('id')->on('provinces');
-            // $table->foreign('regency_id')->references('id')->on('regencies');
-            // $table->foreign('district_id')->references('id')->on('districts');
-            // $table->foreign('village_id')->references('id')->on('villages');
             $table->text('detail_address'); 
             $table->timestamps();
         });
