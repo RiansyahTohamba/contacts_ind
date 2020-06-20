@@ -68,7 +68,7 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-              <form class="form-horizontal" method="post" action="{{ route('store') }}" >
+              <form class="form-horizontal" method="post" action="{{ route('contact.store') }}" >
                 {{ csrf_field() }}
                 <div class="form-group">
                   <label class="control-label col-sm-3">Nama  </label>

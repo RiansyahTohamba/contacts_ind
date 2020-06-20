@@ -49,7 +49,11 @@ class ContactController extends BaseController
        $data->save();
        return redirect()->route('index')->with('alert-success','Berhasil Menambahkan Data!');
    }
-
+    public function destroy($id)
+    {
+        Contact::where('id',$id)->first()->delete();
+        return redirect()->route('contact.index')->with('alert-success','Data berhasi dihapus!');
+    }
 	/**
 	 * Get Ajax Request and restun Data
 	 *

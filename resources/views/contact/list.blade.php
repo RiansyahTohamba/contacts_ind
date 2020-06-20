@@ -51,10 +51,10 @@
                             <td>{{ $ct->village_id }}</td>
                             <td>{{ $ct->detail_address }}</td>
                             <td>
-                                <form action="{{ route('destroy', $ct->id) }}" method="post">
+                                <form action="{{ route('contact.destroy', $ct->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
-                                    <a href="{{ route('edit',$ct->id) }}" class=" btn btn-sm btn-primary">Edit</a>
+                                    <a href="{{ route('contact.edit',$ct->id) }}" class=" btn btn-sm btn-primary">Edit</a>
                                     <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Yakin ingin menghapus data?')">Delete</button>
                                 </form>
                             </td>
