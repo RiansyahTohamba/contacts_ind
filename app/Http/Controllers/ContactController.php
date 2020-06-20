@@ -49,6 +49,35 @@ class ContactController extends BaseController
        $data->save();
        return redirect()->route('index')->with('alert-success','Berhasil Menambahkan Data!');
    }
+   public function edit($id)
+    {
+        $data['data'] = Contact::where('id',$id)->get();
+        $data['provinces'] = Province::all();        
+        return view('contact/edit',$data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $data = Contact::where('id',$id)->first();
+       $data->name = $request->name;
+       $data->email = $request->email;
+       $data->handphone = $request->handphone;
+       $data->detail_address = $request->detail_address;
+       $data->province_id = $request->province_id;
+       $data->regency_id = $request->regency_id;
+       $data->district_id = $request->district_id;
+       $data->village_id = $request->village_id;
+        $data->save();
+        return redirect()->route('contact.index')->with('alert-success','Data berhasil diubah!');
+    }
+
     public function destroy($id)
     {
         Contact::where('id',$id)->first()->delete();

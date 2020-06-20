@@ -234,6 +234,10 @@ public function edit($id)
         $data->save();
         return redirect()->route('kontak.index')->with('alert-success','Data berhasil diubah!');
     }
+
+
+
+    ======
 Nanggung nih, sekalian deh edit pada method destroy dan masukkan kode dibawah.
 public function destroy($id)
     {
