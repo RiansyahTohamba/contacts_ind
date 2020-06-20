@@ -8,7 +8,6 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
         <!-- Styles -->
         <style>
             html, body {
@@ -62,6 +61,8 @@
                 margin-bottom: 30px;
             }
         </style>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -71,7 +72,8 @@
               <div class="form-group">
                 <label class="control-label col-sm-3">Provinsi:</label>
                 <div class="col-sm-9">
-                  <select class="form-control" name="provinsi" id="provinsi">
+                  <select class="form-control" name="province" id="province">
+                    <option value="">--- Pilih Provinsi ---</option>
                     @foreach($provinces as $prov)
                       <option value="{{$prov->id }}">{{ $prov->name }}</option>
                     @endforeach
@@ -82,7 +84,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-3" >Kota/Kabupaten:</label>
                 <div class="col-sm-9">          
-                  <select class="form-control" name="kota" id="kota">
+                  <select class="form-control" name="regency" id="regency">
                     <option></option>
                   </select>
                   <img src="asset/img/loading.gif" width="35" id="load2" style="display:none;" />
@@ -91,7 +93,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-3" >Kecamatan:</label>
                 <div class="col-sm-9">          
-                  <select class="form-control" name="kecamatan" id="kecamatan">
+                  <select class="form-control" name="district" id="district">
                     <option></option>
                   </select>
                   <img src="asset/img/loading.gif" width="35" id="load3" style="display:none;" />
@@ -100,7 +102,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-3" >Kelurahan:</label>
                 <div class="col-sm-9">          
-                  <select class="form-control" name="kelurahan" id="kelurahan">
+                  <select class="form-control" name="village" id="village">
                     <option></option>
                   </select>
                 </div>
@@ -113,5 +115,66 @@
             </form>
             </div>
         </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('select[name="province"]').on('change', function() {
+            var provID = $(this).val();
+            if(provID) {
+                $.ajax({
+                    url: '/regency/ajax/'+provID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="regency"]').empty();
+                        $('select[name="regency"]').append('<option value="">Pilih Kabupaten</option>');
+                        $.each(data, function(key, value) {
+                            $('select[name="regency"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="regency"]').empty();
+            }
+        });
+        $('select[name="regency"]').on('change', function() {
+            var provID = $(this).val();
+            if(provID) {
+                $.ajax({
+                    url: '/district/ajax/'+provID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="district"]').empty();
+                        $('select[name="district"]').append('<option value="">Pilih Kecamatan</option>');
+                        $.each(data, function(key, value) {
+                            $('select[name="district"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="district"]').empty();
+            }
+        });
+        $('select[name="district"]').on('change', function() {
+            var provID = $(this).val();
+            if(provID) {
+                $.ajax({
+                    url: '/village/ajax/'+provID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="village"]').empty();
+                        $('select[name="village"]').append('<option value="">Pilih Kelurahan/Desa</option>');
+                        $.each(data, function(key, value) {
+                            $('select[name="village"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="village"]').empty();
+            }
+        });
+    });
+</script>
     </body>
 </html>

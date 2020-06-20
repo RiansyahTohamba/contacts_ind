@@ -13,3 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::resource('/','ContactController');
+Route::get('regency/ajax/{id}',array('as'=>'regency.ajax','uses'=>'ContactController@regencyAjax'));
+Route::get('district/ajax/{id}',array('as'=>'district.ajax','uses'=>'ContactController@districtAjax'));
+Route::get('village/ajax/{id}',array('as'=>'village.ajax','uses'=>'ContactController@villageAjax'));
