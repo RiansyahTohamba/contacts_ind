@@ -18,7 +18,7 @@ class ContactController extends BaseController
     {
         $data['tes'] = 'baiklah';
         $data['provinces'] = Province::all();
-        return view('welcome',$data);
+        return view('contact_form',$data);
     }
 
 	/**
