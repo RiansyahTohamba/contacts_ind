@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Http\Request;
 use App\Province;
 use App\Regency;
 use App\District;
@@ -27,6 +28,27 @@ class ContactController extends BaseController
         $data['provinces'] = Province::all();
         return view('contact/form',$data);
     }
+
+   /**
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+   public function store(Request $request)
+   {
+       $data = new Contact();
+       $data->name = $request->name;
+       $data->email = $request->email;
+       $data->handphone = $request->handphone;
+       $data->detail_address = $request->detail_address;
+       $data->province_id = $request->province_id;
+       $data->regency_id = $request->regency_id;
+       $data->district_id = $request->district_id;
+       $data->village_id = $request->village_id;
+       $data->save();
+       return redirect()->route('index')->with('alert-success','Berhasil Menambahkan Data!');
+   }
 
 	/**
 	 * Get Ajax Request and restun Data

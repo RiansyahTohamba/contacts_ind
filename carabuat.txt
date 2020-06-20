@@ -137,7 +137,12 @@ Sekarang saatnya kita membuat function untuk store (insert data) ke database. Bu
     </section>
     <!-- /.main-section -->
 @endsection
+
+
+
+
 Setelah itu edit controller Kontak.php dan edit pada method create dan store.
+
 public function create()
    {
        return view('kontak_create');
@@ -159,8 +164,11 @@ public function create()
        $data->save();
        return redirect()->route('kontak.index')->with('alert-success','Berhasil Menambahkan Data!');
    }
+
+
 Silahkan kalian coba akses ke localhost:8000/create , jika berhasil maka akan ada tanda “Berhasil menambahkan data saat berhasil”.
 Sekarang kita akan membuat function edit yaitu mengubah data. Silahkan buat views baru dan berinama kontak_edit.blade.php lalu masukkan kode dibawah
+
 @extends('base')
 @section('content')
     <!-- Main Section -->

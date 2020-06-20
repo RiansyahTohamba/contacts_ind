@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(Area::class);
+        $this->call(Area::class);
         $this->call(Contact::class);
     }
 }

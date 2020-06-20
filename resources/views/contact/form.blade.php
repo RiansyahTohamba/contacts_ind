@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <!-- Styles -->
@@ -61,18 +63,38 @@
                 margin-bottom: 30px;
             }
         </style>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     </head>
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-              <form class="form-horizontal" method="post">
+              <form class="form-horizontal" method="post" action="{{ route('store') }}" >
+                {{ csrf_field() }}
+                <div class="form-group">
+                  <label class="control-label col-sm-3">Nama  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="name" class="form-control">
+                  </div>
+                </div>
 
                 <div class="form-group">
-                  <label class="control-label col-sm-3">Nama : </label>
+                  <label class="control-label col-sm-3">Email  </label>
                   <div class="col-sm-9">
-                    
+                    <input type="email" name="email" class="form-control">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-3">Handphone  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="handphone" class="form-control">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-3">Alamat Detail  </label>
+                  <div class="col-sm-9">
+                    <input type="text" name="detail_address" class="form-control">
                   </div>
                 </div>
 
@@ -80,7 +102,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3">Provinsi:</label>
                   <div class="col-sm-9">
-                    <select class="form-control" name="province" id="province">
+                    <select class="form-control" name="province_id" id="province">
                       <option value="">--- Pilih Provinsi ---</option>
                       @foreach($provinces as $prov)
                         <option value="{{$prov->id }}">{{ $prov->name }}</option>
@@ -94,7 +116,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3" >Kota/Kabupaten:</label>
                   <div class="col-sm-9">          
-                    <select class="form-control" name="regency" id="regency">
+                    <select class="form-control" name="regency_id" id="regency">
                       <option></option>
                     </select>
                     <img src="asset/img/loading.gif" width="35" id="load2" style="display:none;" />
@@ -103,7 +125,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3" >Kecamatan:</label>
                   <div class="col-sm-9">          
-                    <select class="form-control" name="district" id="district">
+                    <select class="form-control" name="district_id" id="district">
                       <option></option>
                     </select>
                     <img src="asset/img/loading.gif" width="35" id="load3" style="display:none;" />
@@ -112,7 +134,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-3" >Kelurahan:</label>
                   <div class="col-sm-9">          
-                    <select class="form-control" name="village" id="village">
+                    <select class="form-control" name="village_id" id="village">
                       <option></option>
                     </select>
                   </div>
@@ -127,7 +149,7 @@
         </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('select[name="province"]').on('change', function() {
+        $('select[id="province"]').on('change', function() {
             var provID = $(this).val();
             if(provID) {
                 $.ajax({
@@ -135,18 +157,18 @@
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
-                        $('select[name="regency"]').empty();
-                        $('select[name="regency"]').append('<option value="">Pilih Kabupaten</option>');
+                        $('select[id="regency"]').empty();
+                        $('select[id="regency"]').append('<option value="">Pilih Kabupaten</option>');
                         $.each(data, function(key, value) {
-                            $('select[name="regency"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                            $('select[id="regency"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
                         });
                     }
                 });
             }else{
-                $('select[name="regency"]').empty();
+                $('select[id="regency"]').empty();
             }
         });
-        $('select[name="regency"]').on('change', function() {
+        $('select[id="regency"]').on('change', function() {
             var provID = $(this).val();
             if(provID) {
                 $.ajax({
@@ -154,18 +176,18 @@
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
-                        $('select[name="district"]').empty();
-                        $('select[name="district"]').append('<option value="">Pilih Kecamatan</option>');
+                        $('select[id="district"]').empty();
+                        $('select[id="district"]').append('<option value="">Pilih Kecamatan</option>');
                         $.each(data, function(key, value) {
-                            $('select[name="district"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                            $('select[id="district"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
                         });
                     }
                 });
             }else{
-                $('select[name="district"]').empty();
+                $('select[id="district"]').empty();
             }
         });
-        $('select[name="district"]').on('change', function() {
+        $('select[id="district"]').on('change', function() {
             var provID = $(this).val();
             if(provID) {
                 $.ajax({
@@ -173,15 +195,15 @@
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
-                        $('select[name="village"]').empty();
-                        $('select[name="village"]').append('<option value="">Pilih Kelurahan/Desa</option>');
+                        $('select[id="village"]').empty();
+                        $('select[id="village"]').append('<option value="">Pilih Kelurahan/Desa</option>');
                         $.each(data, function(key, value) {
-                            $('select[name="village"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                            $('select[id="village"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
                         });
                     }
                 });
             }else{
-                $('select[name="village"]').empty();
+                $('select[id="village"]').empty();
             }
         });
     });
