@@ -66,53 +66,63 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            
             <div class="content">
-                <form class="form-horizontal" method="post">
-              <div class="form-group">
-                <label class="control-label col-sm-3">Provinsi:</label>
-                <div class="col-sm-9">
-                  <select class="form-control" name="province" id="province">
-                    <option value="">--- Pilih Provinsi ---</option>
-                    @foreach($provinces as $prov)
-                      <option value="{{$prov->id }}">{{ $prov->name }}</option>
-                    @endforeach
-                  </select>
-                  <img src="asset/img/loading.gif" width="35" id="load1" style="display:none;" />
+              <form class="form-horizontal" method="post">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-3">Nama : </label>
+                  <div class="col-sm-9">
+                    
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" >Kota/Kabupaten:</label>
-                <div class="col-sm-9">          
-                  <select class="form-control" name="regency" id="regency">
-                    <option></option>
-                  </select>
-                  <img src="asset/img/loading.gif" width="35" id="load2" style="display:none;" />
+
+                
+                <div class="form-group">
+                  <label class="control-label col-sm-3">Provinsi:</label>
+                  <div class="col-sm-9">
+                    <select class="form-control" name="province" id="province">
+                      <option value="">--- Pilih Provinsi ---</option>
+                      @foreach($provinces as $prov)
+                        <option value="{{$prov->id }}">{{ $prov->name }}</option>
+                      @endforeach
+                    </select>
+                    <img src="asset/img/loading.gif" width="35" id="load1" style="display:none;" />
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" >Kecamatan:</label>
-                <div class="col-sm-9">          
-                  <select class="form-control" name="district" id="district">
-                    <option></option>
-                  </select>
-                  <img src="asset/img/loading.gif" width="35" id="load3" style="display:none;" />
+
+
+                <div class="form-group">
+                  <label class="control-label col-sm-3" >Kota/Kabupaten:</label>
+                  <div class="col-sm-9">          
+                    <select class="form-control" name="regency" id="regency">
+                      <option></option>
+                    </select>
+                    <img src="asset/img/loading.gif" width="35" id="load2" style="display:none;" />
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" >Kelurahan:</label>
-                <div class="col-sm-9">          
-                  <select class="form-control" name="village" id="village">
-                    <option></option>
-                  </select>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" >Kecamatan:</label>
+                  <div class="col-sm-9">          
+                    <select class="form-control" name="district" id="district">
+                      <option></option>
+                    </select>
+                    <img src="asset/img/loading.gif" width="35" id="load3" style="display:none;" />
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">        
-                <div class="col-sm-offset-3 col-sm-9">
-                  <button type="submit" class="btn btn-default">Simpan</button>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" >Kelurahan:</label>
+                  <div class="col-sm-9">          
+                    <select class="form-control" name="village" id="village">
+                      <option></option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-            </form>
+                <div class="form-group">        
+                  <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn btn-default">Simpan</button>
+                  </div>
+                </div>
+              </form>
             </div>
         </div>
 <script type="text/javascript">

@@ -16,7 +16,6 @@ class ContactController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public function index()
     {
-        $data['tes'] = 'baiklah';
         $data['provinces'] = Province::all();
         return view('contact_form',$data);
     }
