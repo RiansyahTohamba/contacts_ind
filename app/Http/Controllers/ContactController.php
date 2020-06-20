@@ -10,14 +10,22 @@ use App\Province;
 use App\Regency;
 use App\District;
 use App\Village;
+use App\Contact;
 
 class ContactController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     public function index()
     {
+        $data['contacts'] = Contact::all();
+        return view('contact/list',$data);
+    }
+
+    public function form()
+    {
         $data['provinces'] = Province::all();
-        return view('contact_form',$data);
+        return view('contact/form',$data);
     }
 
 	/**
