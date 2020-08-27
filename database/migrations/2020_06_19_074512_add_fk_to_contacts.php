@@ -13,19 +13,11 @@ class AddFkToContacts extends Migration
      */
     public function up()
     {
-        $driver = Schema::connection($this->getConnection())->getConnection()->getDriverName();
-        Schema::table('contacts', function (Blueprint $table) use ($driver){
-            if ('sqlite' === $driver) {
-                $table->foreignId('province_id')->nullable();
-                $table->foreignId('regency_id')->nullable();
-                $table->foreignId('district_id')->nullable();
-                $table->foreignId('village_id')->nullable();
-            } else {
-                $table->foreignId('province_id')->constrained();
-                $table->foreignId('regency_id')->constrained();
-                $table->foreignId('district_id')->constrained();
-                $table->foreignId('village_id')->constrained();
-            }
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->foreignId('province_id')->nullable()->constrained();
+            $table->foreignId('regency_id')->nullable()->constrained();
+            $table->foreignId('district_id')->nullable()->constrained();
+            $table->foreignId('village_id')->nullable()->constrained();
         });
     }
 

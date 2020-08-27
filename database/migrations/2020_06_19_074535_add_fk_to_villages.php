@@ -13,13 +13,8 @@ class AddFkToVillages extends Migration
      */
     public function up()
     {
-        $driver = Schema::connection($this->getConnection())->getConnection()->getDriverName();
-        Schema::table('villages', function (Blueprint $table) use ($driver){
-            if ('sqlite' === $driver) {
-                $table->foreignId('district_id')->nullable();               
-            }else{
-                $table->foreignId('district_id')->constrained();
-            }
+        Schema::table('villages', function (Blueprint $table) {
+            $table->foreignId('district_id')->nullable()->constrained();               
         });
     }
 
