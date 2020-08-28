@@ -13,8 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/',array('as'=>'index','uses'=>'ContactController@index'));
+
+// resource = semua HTTPMethod digunakan
 Route::resource('contact','ContactController');
+Route::resource('province','ProvinceController');
+
 Route::get('contact_form',array('as'=>'contact_form','uses'=>'ContactController@form'));
+Route::get('province_form',array('as'=>'province_form','uses'=>'ProvinceController@form'));
+
 Route::get('regency/ajax/{id}',array('as'=>'regency.ajax','uses'=>'ContactController@regencyAjax'));
 Route::get('district/ajax/{id}',array('as'=>'district.ajax','uses'=>'ContactController@districtAjax'));
 Route::get('village/ajax/{id}',array('as'=>'village.ajax','uses'=>'ContactController@villageAjax'));
